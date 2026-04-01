@@ -19,7 +19,7 @@ This repository contains four progressive exercises for the Master course **Cont
 - **Containerization:** Docker & Docker Compose
 - **CI/CD:** GitHub Actions
 - **Code Quality:** SonarCloud, golangci-lint
-- **Security:** Trivy, Snyk
+- **Security:** Trivy, govulncheck
 - **Deployment:** Kubernetes (Minikube)
 
 ## Project: Product Catalog API
