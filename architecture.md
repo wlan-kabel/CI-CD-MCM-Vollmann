@@ -55,5 +55,3 @@ HTTP Request → Router → Handler → Store → Database
 | **Performance** | Schnell | Langsamer |
 | **Skalierbarkeit** | Begrenzt | Unbegrenzt |
 | **Use Case** | Dev & Tests | Production |
-
-
