@@ -55,27 +55,45 @@ jobs:
           version: latest
           args: --config=.golangci.yml
   sonarqube:
-    name: SonarQube
-    runs-on: macos-latest
-    needs: [test, lint]
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Download coverage artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-1.26-ubuntu-latest
-          path: .
-      - name: Move coverage file
-        run: |
-          find artifacts -name coverage.out
-          cp $(find artifacts -name coverage.out | head -n 1) ./coverage.out
-          ls -lah coverage.out
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  name: SonarCloud Analysis
+  runs-on: ubuntu-latest
+  needs: [test, lint]
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Download all coverage artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: coverage-artifacts
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: "1.26"
+
+    - name: Install gocovmerge
+      run: go install github.com/wadey/gocovmerge@latest
+
+    - name: Merge coverage reports
+      run: |
+        find coverage-artifacts -name "coverage.out" > files.txt
+        gocovmerge $(cat files.txt) > coverage.out
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarqube-scan-action@v6.0.0
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.projectKey=wlan-kabel_CI-CD-MCM-Vollmann
+          -Dsonar.organization=wlan-kabel
+          -Dsonar.go.coverage.reportPaths=coverage.out
+          -Dsonar.sources=.
+          -Dsonar.tests=.
   docker-build:
     runs-on: ubuntu-latest
     needs: [test, lint]
