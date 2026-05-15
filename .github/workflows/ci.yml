@@ -67,8 +67,11 @@ jobs:
         with:
           name: coverage-1.26-ubuntu-latest
           path: .
-      - name: Veryfiy coverage file
-        run: ls -la
+      - name: Move coverage file
+        run: |
+          find artifacts -name coverage.out
+          cp $(find artifacts -name coverage.out | head -n 1) ./coverage.out
+          ls -lah coverage.out
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
