@@ -1,5 +1,7 @@
 # Exercise 3: CI Pipeline -- SonarCloud, Matrix Builds & Linting
 
+[![CI](https://github.com/wlan-kabel/CI-CD-MCM-Vollmann/actions/workflows/ci.yml/badge.svg)](https://github.com/wlan-kabel/CI-CD-MCM-Vollmann/actions/workflows/ci.yml)
+
 **Course:** Continuous Delivery in Agile Software Development (Master)
 **Points:** 24
 
