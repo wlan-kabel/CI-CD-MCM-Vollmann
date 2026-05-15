@@ -65,7 +65,10 @@ jobs:
       - name: Download coverage artifacts
         uses: actions/download-artifact@v4
         with:
-          path: coverage-1.26-ubuntu-latest
+          name: coverage-1.26-ubuntu-latest
+          path: .
+      - name: Veryfiy coverage file
+        run: ls -la
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
